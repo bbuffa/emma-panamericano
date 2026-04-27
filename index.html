@@ -21,7 +21,7 @@
         }
 
         .rh{text-align:center; position:relative; z-index:2; margin-bottom:1.5rem}
-        .rbadge{display:inline-block;background:linear-gradient(135deg,#75D94F,#4FC23A);color:#0A1A50;font-size:14px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:8px;text-transform:uppercase}
+        .rbadge{display:inline-block;background:linear-gradient(135deg,#75D94F,#4FC23A);color:#0A1A50;font-size:22px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:8px;text-transform:uppercase}
         .rh h1{font-family:'Bebas Neue',cursive;font-size:52px;text-shadow:0 2px 15px rgba(0,0,0,0.8);line-height:1}
         .rh h1 span{color:#75D94F}
         .rh p{font-size:14px; font-weight:700; text-shadow:0 1px 5px #000}
@@ -57,9 +57,9 @@
 <body>
 <div class="rw">
     <div class="rh">
-        <div class="rbadge">Rifa Solidaria · Emma<br><strong>PANAMERICANO 2026</strong></div>
+        <div class="rbadge">Rifa Solidaria · Emma<br><strong>PANAMERICANO 2026</strong><br></div>
         <h1>¡Elegí tu<span> número!</span></h1>
-        <p>Valor por número: <span style="color:#75D94F; font-size:1.4em">$5.000</span></p>
+        <p>Valor por número: <span style="color:#75D94F; font-size:2em">$5.000</span></p>
     </div>
 
     <div class="rpanel" id="panel">
@@ -75,7 +75,7 @@
     <div class="raliascard">
         <p style="font-size:10px; text-transform:uppercase; letter-spacing:1px">Alias Mercado Pago</p>
         <div class="ralias-val">emmabuffa.mp</div>
-        <p style="font-size:12px">Luego de reservar, transferí el total e <br><strong>incluí tu nombre en la referencia</strong><br>¡Muchas gracias por ayudarme a cumplir este sueño!</p>
+        <p style="font-size:12px">Luego de reservar, transferí el total e <br><strong>incluí tu nombre en la referencia</strong><br><br>¡Muchas gracias por ayudarme a cumplir este sueño!</p>
     </div>
 </div>
 
@@ -87,7 +87,7 @@ const STORAGE_KEY = 'rifa-emma-v1';
 
 // 1. AQUÍ AGREGÁS LOS NÚMEROS QUE YA ESTÁN RESERVADOS PARA TODOS
 // Ejemplo: [5, 12, 45]
-const LISTA_MAESTRA_RESERVADOS = [3,5]; 
+const LISTA_MAESTRA_RESERVADOS = [3,4,5]; 
 
 let selSet = new Set();
 let localTaken = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
