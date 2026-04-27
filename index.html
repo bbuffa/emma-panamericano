@@ -57,7 +57,7 @@
 <body>
 <div class="rw">
     <div class="rh">
-        <div class="rbadge">Rifa Solidaria · Emma</div>
+        <div class="rbadge">Rifa Solidaria · Emma<br><strong>PANAMERICANO 2026</strong></div>
         <h1>¡Elegí tu<span> número!</span></h1>
         <p>Valor por número: <span style="color:#75D94F; font-size:1.4em">$5.000</span></p>
     </div>
@@ -75,7 +75,7 @@
     <div class="raliascard">
         <p style="font-size:10px; text-transform:uppercase; letter-spacing:1px">Alias Mercado Pago</p>
         <div class="ralias-val">emmabuffa.mp</div>
-        <p style="font-size:12px">Luego de reservar, transferí el total e <br><strong>incluí tu nombre en la referencia</strong></p>
+        <p style="font-size:12px">Luego de reservar, transferí el total e <br><strong>incluí tu nombre en la referencia</strong><br>¡Muchas gracias por ayudarme a cumplir este sueño!</p>
     </div>
 </div>
 
@@ -87,7 +87,7 @@ const STORAGE_KEY = 'rifa-emma-v1';
 
 // 1. AQUÍ AGREGÁS LOS NÚMEROS QUE YA ESTÁN RESERVADOS PARA TODOS
 // Ejemplo: [5, 12, 45]
-const LISTA_MAESTRA_RESERVADOS = []; 
+const LISTA_MAESTRA_RESERVADOS = [3,5]; 
 
 let selSet = new Set();
 let localTaken = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
