@@ -77,7 +77,6 @@
         <div class="ralias-val">emmabuffa.mp</div>
         <p style="font-size:12px">Luego de reservar, transferí el total e <br><strong>incluí tu nombre en la referencia</strong><br><br>¡Muchas gracias por ayudarme a cumplir este sueño!</p>
     </div>
-    <button class="btn-r-admin" onclick="downloadExcel()">RESERVAS</button>
 </div>
 
 <script>
@@ -156,30 +155,7 @@ async function doConfirm(){
         btn.disabled = false; btn.textContent = "Confirmar y enviar reserva";
     }
 }
-// 4. FUNCIÓN PARA DESCARGAR EL EXCEL (Agregada)
-function downloadExcel() {
-    const data = [["Número", "Estado"]];
-    
-    LISTA_MAESTRA_RESERVADOS.sort((a,b)=>a-b).forEach(n => {
-        data.push([n, "Confirmado (Código)"]);
-    });
 
-    localTaken.sort((a,b)=>a-b).forEach(n => {
-        if (!LISTA_MAESTRA_RESERVADOS.includes(n)) {
-            data.push([n, "Reservado (Local)"]);
-        }
-    });
-
-    if (data.length === 1) {
-        alert("No hay reservas registradas.");
-        return;
-    }
-
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Reservas");
-    XLSX.writeFile(wb, "Reservas_Rifa_Emma.xlsx");
-}
 renderGrid();
 </script>
 </body>
