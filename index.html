@@ -78,10 +78,6 @@
         <p style="font-size:12px">Luego de reservar, transferí el total e <br><strong>incluí tu nombre en la referencia</strong><br><br>¡Muchas gracias por ayudarme a cumplir este sueño!</p>
     </div>
 </div>
-// EXCEL DE LOS NÚMEROS QUE YA ESTÁN RESERVADOS 
-<div class="admin-row">
-  <button class="abtn abtn-xl" onclick="downloadExcel()">Reservas</button>
-</div>
 
 <script>
 // --- CONFIGURACIÓN ---
@@ -161,63 +157,6 @@ async function doConfirm(){
 }
 
 renderGrid();
-
-    // EXCEL DE LOS NÚMEROS QUE YA ESTÁN RESERVADOS 
-    function downloadExcel(){
-  if(!window.XLSX){alert('SheetJS aún cargando, intentá en un momento.');return;}
-  const wb=XLSX.utils.book_new();
-
-  const entries=Object.entries(st).sort((a,b)=>Number(a[0])-Number(b[0]));
-  const rows=entries.map(([n,v])=>{
-    const name=typeof v==='object'?v.name:v;
-    const fecha=typeof v==='object'&&v.date?fmtDate(v.date):'—';
-    return{
-      'Número':Number(n),
-      'Nombre':name,
-      'Fecha de reserva':fecha,
-      'Importe ($)':PRICE,
-    };
-  });
-
-  const sold=entries.length;
-  const summary=[
-    {A:'RIFA SOLIDARIA – PANAMERICANO 2026',B:''},
-    {A:'Buenos Aires · 7 Jun – 7 Jul 2026',B:''},
-    {A:'',B:''},
-    {A:'Números vendidos:',B:sold},
-    {A:'Total recaudado:',B:sold*PRICE},
-    {A:'Alias de pago:',B:'emmabuffa.mp'},
-    {A:'',B:''},
-  ];
-
-  const wsData=[
-    ['Número','Nombre','Fecha de reserva','Importe ($)'],
-    ...rows.map(r=>[r['Número'],r['Nombre'],r['Fecha de reserva'],r['Importe ($)']])
-  ];
-
-  const ws=XLSX.utils.aoa_to_sheet([
-    ['RIFA SOLIDARIA – PANAMERICANO 2026','','',''],
-    ['Buenos Aires · 7 Jun – 7 Jul 2026','','',''],
-    ['','','',''],
-    ['Números vendidos:',sold,'',''],
-    ['Total recaudado ($):',(sold*PRICE).toLocaleString('es-AR'),'',''],
-    ['Alias de pago:','emmabuffa.mp','',''],
-    ['','','',''],
-    ['Número','Nombre','Fecha de reserva','Importe ($)'],
-    ...rows.map(r=>[r['Número'],r['Nombre'],r['Fecha de reserva'],r['Importe ($)']])
-  ]);
-
-  ws['!cols']=[{wch:12},{wch:30},{wch:22},{wch:14}];
-
-  if(ws['A1'])ws['A1'].s={font:{bold:true,sz:14}};
-  if(ws['A4'])ws['A4'].s={font:{bold:true}};
-  if(ws['A5'])ws['A5'].s={font:{bold:true}};
-
-  XLSX.utils.book_append_sheet(wb,ws,'Reservas');
-
-  const ts=new Date().toISOString().slice(0,10);
-  XLSX.writeFile(wb,`rifa-panamericano-2026-${ts}.xlsx`);
-}
 </script>
 </body>
 </html>
