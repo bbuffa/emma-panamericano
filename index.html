@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rifa Solidaria Emma - Panamericano 2026</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&family=DM+Mono:wght@500&display=swap');
         
@@ -12,189 +11,152 @@
         
         .rw{
             font-family:'Nunito',sans-serif;
-            /* SECCIÓN MODIFICADA: Opacidad reducida de 0.9 a 0.4 para que se vea mucho más la imagen */
             background: 
-                linear-gradient(rgba(11, 31, 163, 0.4), rgba(10, 21, 128, 0.45), rgba(7, 16, 96, 0.6)),
+                linear-gradient(rgba(11, 31, 163, 0.45), rgba(10, 21, 128, 0.5), rgba(7, 16, 96, 0.65)),
                 url('image-emma.jpg') center/cover no-repeat fixed;
             min-height:100vh;
             padding:1.5rem 1rem 2.5rem;
             position:relative;
-            overflow:hidden;
             color: #fff;
         }
-        
-        .rw::before{
-            content:'';
-            position:absolute;
-            top:0; left:0; right:0; bottom:0;
-            background: radial-gradient(ellipse 80% 40% at 50% 100%, rgba(30,80,200,0.35) 0%, transparent 70%);
-            pointer-events:none;
-            z-index:0;
-        }
-        
-        .stars{position:absolute;top:0;left:0;right:0;height:300px;pointer-events:none;z-index:1}
-        .star{position:absolute;color:white;opacity:0.8;animation:twinkle 2s infinite alternate}
-        @keyframes twinkle{0%{opacity:0.4;transform:scale(0.9)}100%{opacity:1;transform:scale(1.1)}}
-        
-        .rh{text-align:center;position:relative;z-index:2;margin-bottom:1.1rem}
-        .rbadge{display:inline-block;background:linear-gradient(135deg,#75D94F,#4FC23A);color:#0A1A50;font-size:24px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:8px;letter-spacing:0.7px;text-transform:uppercase;box-shadow:0 2px 12px rgba(117,217,79,0.45)}
-        
-        /* Sombras reforzadas para legibilidad sobre el fondo más claro */
-        .rh h1{font-family:'Bebas Neue',cursive;font-size:48px;letter-spacing:2px;color:#fff;line-height:1;margin-bottom:4px;text-shadow:0 2px 15px rgba(0,0,0,0.8)}
+
+        .rh{text-align:center; position:relative; z-index:2; margin-bottom:1.5rem}
+        .rbadge{display:inline-block;background:linear-gradient(135deg,#75D94F,#4FC23A);color:#0A1A50;font-size:14px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:8px;text-transform:uppercase}
+        .rh h1{font-family:'Bebas Neue',cursive;font-size:52px;text-shadow:0 2px 15px rgba(0,0,0,0.8);line-height:1}
         .rh h1 span{color:#75D94F}
-        .flag-strip{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px}
-        .fl{height:3px;width:32px;border-radius:2px}
-        .fl1{background:#75AADB}.fl2{background:#fff}
-        .flag-text{font-size:20px;font-weight:800;color:#fff;letter-spacing:0.4px;text-shadow:0 1px 5px rgba(0,0,0,0.8)}
-        .rh p{font-size:13px;color:#fff;font-weight:700;text-shadow:0 1px 5px rgba(0,0,0,0.8)}
+        .rh p{font-size:14px; font-weight:700; text-shadow:0 1px 5px #000}
 
-        /* Paneles con fondo un poco más sólido para compensar el fondo de imagen */
-        .rpanel{background:rgba(10, 25, 80, 0.85);border:1.5px solid rgba(117,217,79,0.65);border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:1.1rem;display:none;position:relative;z-index:2;backdrop-filter:blur(10px)}
+        .rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px;margin-bottom:1.5rem;position:relative;z-index:2}
+        
+        /* BOTONES DE NÚMEROS */
+        .nBtn{height:42px; border-radius:8px; border:1px solid rgba(255,255,255,0.4); background:rgba(10, 25, 80, 0.7); color:#fff; font-family:'DM Mono'; font-weight:700; cursor:pointer; backdrop-filter:blur(4px)}
+        .nBtn.act{background:#75D94F; color:#0A1A50; border-color:#75D94F; transform:scale(1.05)}
+        
+        /* ESTILO PARA NÚMEROS YA RESERVADOS (PARA TODOS) */
+        .nBtn.tkn{
+            background: #222 !important; 
+            color: rgba(255,255,255,0.2) !important;
+            border-color: rgba(255,255,255,0.1) !important;
+            text-decoration: line-through;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .rpanel{background:rgba(10, 25, 80, 0.9); border:2px solid #75D94F; border-radius:12px; padding:1.2rem; margin-bottom:1.1rem; display:none; position:relative; z-index:2; backdrop-filter:blur(10px)}
         .rpanel.vis{display:block}
-        .rpanel h2{font-size:14px;font-weight:800;color:#fff;margin-bottom:3px}
-        .rpanel .rsub{font-size:12px;color:rgba(255,255,255,0.9);margin-bottom:10px;line-height:1.4}
-        .sel-nums{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:34px;padding:7px;background:rgba(0,0,0,0.4);border-radius:8px;align-items:center}
-        .sel-nums-empty{font-size:12px;color:rgba(255,255,255,0.6);font-style:italic}
-        .sel-pill{background:#75D94F;color:#0A1A50;font-size:12px;font-weight:800;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px;cursor:pointer}
+        .sel-nums{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;padding:8px;background:rgba(0,0,0,0.4);border-radius:8px}
+        .sel-pill{background:#75D94F;color:#0A1A50;font-size:12px;font-weight:800;padding:4px 10px;border-radius:20px}
         
-        .rpanel input{width:100%;padding:9px 12px;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;border:none;border-radius:8px;background:#fff;color:#000;outline:none}
+        input{width:100%;padding:12px;border-radius:8px;border:none;margin-bottom:10px;font-weight:700;font-size:16px; color:#000}
+        .rbtn-p{width:100%; padding:12px; background:#75D94F; color:#0A1A50; font-weight:800; border:none; border-radius:8px; cursor:pointer; font-size:15px}
         
-        .ractions{display:flex;gap:8px;margin-top:10px}
-        .rbtn{padding:9px 18px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;border-radius:8px;cursor:pointer;border:1.5px solid transparent;transition:opacity .15s,transform .1s;letter-spacing:0.3px}
-        .rbtn-p{background:linear-gradient(135deg,#75D94F,#4FC23A);color:#0A1A50;box-shadow:0 2px 10px rgba(117,217,79,0.5)}
-        .rbtn-g{background:rgba(255,255,255,0.2);color:#fff;border-color:rgba(255,255,255,0.3)}
-        
-        .hint{font-size:11px;color:#fff;text-align:center;margin-bottom:8px;position:relative;z-index:2;font-weight:700;text-shadow:0 1px 5px rgba(0,0,0,0.8)}
-        .rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:5px;margin-bottom:1.4rem;position:relative;z-index:2}
-        
-        /* Botones de números más opacos */
-        .nBtn{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;padding:0;height:38px;border:1px solid rgba(255,255,255,0.4);border-radius:7px;background:rgba(10, 25, 80, 0.7);color:#fff;cursor:pointer;transition:all .1s;backdrop-filter:blur(4px)}
-        .nBtn:hover:not(:disabled):not(.act){background:rgba(117,217,79,0.8);color:#0A1A50;transform:scale(1.08)}
-        .nBtn.act{background:#75D94F;border-color:#75D94F;color:#0A1A50;transform:scale(1.08);box-shadow:0 0 12px rgba(117,217,79,0.4)}
-        .nBtn.tkn{background:rgba(255,80,80,0.4);border-color:rgba(255,80,80,0.3);color:rgba(255,255,255,0.5);cursor:default;text-decoration:line-through}
-
-        .raliascard{background:rgba(10, 25, 80, 0.8);border:1px solid rgba(255,255,255,0.3);border-radius:12px;padding:1.1rem 1.25rem;text-align:center;margin-bottom:1rem;position:relative;z-index:2;backdrop-filter:blur(6px);box-shadow:0 4px 15px rgba(0,0,0,0.3)}
-        .ralias-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:#A8C8F0;font-weight:800;margin-bottom:5px}
-        .ralias-val{font-family:'DM Mono',monospace;font-size:26px;font-weight:700;color:#75D94F;margin-bottom:5px}
-        .ralias-note{font-size:12px;color:#fff;line-height:1.5}
-
-        .rtknhdr{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:#fff;margin-bottom:8px;border-top:1px solid rgba(255,255,255,0.15);padding-top:1rem;margin-top:0.5rem;position:relative;z-index:2}
-        .rtkn-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:5px 10px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,80,80,0.3);border-radius:6px;margin-bottom:4px;color:#FFBABA;position:relative;z-index:2}
-
-        .closing{text-align:center;padding:1.1rem 1rem 0;position:relative;z-index:2;border-top:1px solid rgba(255,255,255,0.15);margin-top:0.5rem}
-        .closing p{font-size:16px;font-weight:800;color:#75D94F;text-shadow:0 0 15px rgba(0,0,0,0.8)}
-        
-        .reset-btn{margin:15px auto;display:block;background:none;color:rgba(255,255,255,0.4);border:none;cursor:pointer;font-size:12px;z-index:3;position:relative}
+        .raliascard{background:rgba(10, 25, 80, 0.85); border-radius:12px; padding:1.2rem; text-align:center; position:relative; z-index:2; border:1px solid rgba(255,255,255,0.2)}
+        .ralias-val{font-family:'DM Mono'; font-size:26px; color:#75D94F; margin:5px 0; font-weight:700}
     </style>
 </head>
 <body>
-
 <div class="rw">
-    <div class="stars" id="starsC"></div>
-
     <div class="rh">
-        <div class="rbadge">Rifa Solidaria · Emma · Panamericano 2026</div>
-        <div class="flag-strip">
-            <div class="fl fl1"></div><div class="fl fl2"></div><div class="fl fl1"></div>
-            <span class="flag-text">¿Me ayudás a cumplir este sueño?</span>
-            <div class="fl fl1"></div><div class="fl fl2"></div><div class="fl fl1"></div>
-        </div>
+        <div class="rbadge">Rifa Solidaria · Emma</div>
         <h1>¡Elegí tu<span> número!</span></h1>
-        <p>Cada número vale <strong style="color:#75D94F; font-size:2em">$5.000</strong></p>
+        <p>Valor por número: <span style="color:#75D94F; font-size:1.4em">$5.000</span></p>
     </div>
 
     <div class="rpanel" id="panel">
-        <h2>Números seleccionados</h2>
+        <h2 style="font-size:16px; margin-bottom:8px">Tus números seleccionados:</h2>
         <div class="sel-nums" id="selnums"></div>
-        <input type="text" id="nminput" placeholder="Tu nombre completo" autocomplete="off"/>
-        <div class="ractions">
-            <button class="rbtn rbtn-p" id="cbtn" onclick="doConfirm()">Confirmar reserva</button>
-            <button class="rbtn rbtn-g" onclick="doCancel()">Cancelar</button>
-        </div>
-        <p id="pnote" style="font-size:11px; margin-top:8px; font-weight:700"></p>
-    </div>
-
-    <p class="hint">Tocá los números para seleccionarlos</p>
-    
-    <div class="rrefrow">
-        <span class="rref-st" id="rst" style="font-size:11px; font-weight:700; text-shadow:0 1px 3px #000">Cargando...</span>
-        <button class="rbtn-g" style="font-size:11px; padding:4px 8px; border-radius:4px" onclick="lar()">Actualizar</button>
+        <input type="text" id="nminput" placeholder="Tu nombre y apellido">
+        <button class="rbtn-p" id="cbtn" onclick="doConfirm()">Confirmar y enviar reserva</button>
+        <p id="pnote" style="font-size:13px; margin-top:10px; text-align:center; font-weight:800"></p>
     </div>
 
     <div class="rgrid" id="grid"></div>
 
     <div class="raliascard">
-        <div class="ralias-lbl">Alias Mercado Pago</div>
+        <p style="font-size:10px; text-transform:uppercase; letter-spacing:1px">Alias Mercado Pago</p>
         <div class="ralias-val">emmabuffa.mp</div>
-        <div class="ralias-note">Transferí el total e <strong>ingresá tu nombre como referencia</strong></div>
+        <p style="font-size:12px">Luego de reservar, transferí el total e <br><strong>incluí tu nombre en la referencia</strong></p>
     </div>
-
-    <div id="tknsec" style="display:none">
-        <div class="rtknhdr">Números ya reservados</div>
-        <div id="tknlist"></div>
-    </div>
-
-    <div class="closing"><p>¡Muchas gracias por tu ayuda! ✦</p></div>
-<!--OCULTA INFO-->
-    <button class="reset-btn" onclick="resetRifa()">🔄 Resetear (Solo pruebas)</button>
 </div>
 
 <script>
-/* Mantenemos la misma lógica del archivo original para asegurar el funcionamiento */
-const SK = 'rifa-emmabuffa-200-v2';
+// --- CONFIGURACIÓN ---
+const EMAIL_DESTINO = 'brunobuffa77@gmail.com';
 const PRICE = 5000;
-let st = {};
+const STORAGE_KEY = 'rifa-emma-v1';
+
+// 1. AQUÍ AGREGÁS LOS NÚMEROS QUE YA ESTÁN RESERVADOS PARA TODOS
+// Ejemplo: [5, 12, 45]
+const LISTA_MAESTRA_RESERVADOS = []; 
+
 let selSet = new Set();
-
-function fmt(n){ return '$' + n.toLocaleString('es-AR'); }
-
-function load(){ st = JSON.parse(localStorage.getItem(SK) || '{}'); }
-function save(){ localStorage.setItem(SK, JSON.stringify(st)); }
-
-function renderSelPanel(){
-  const p = document.getElementById('panel');
-  if(!selSet.size){ p.classList.remove('vis'); return; }
-  p.classList.add('vis');
-  const nums = [...selSet].sort((a,b)=>a-b);
-  document.getElementById('selnums').innerHTML = nums.map(n => `<span class="sel-pill" onclick="toggleNum(${n})">#${n} ✕</span>`).join('');
-  document.getElementById('pnote').textContent = `Total a transferir: ${fmt(nums.length*PRICE)}`;
-}
+let localTaken = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
 function renderGrid(){
-  const g = document.getElementById('grid'); g.innerHTML = '';
-  for(let i=1; i<=200; i++){
-    const b = document.createElement('button');
-    b.className = 'nBtn'; b.id = 'nb' + i; b.textContent = i;
-    if(st[i]){ b.classList.add('tkn'); b.disabled = true; }
-    else if(selSet.has(i)){ b.classList.add('act'); }
-    b.onclick = () => toggleNum(i);
-    g.appendChild(b);
-  }
+    const g = document.getElementById('grid'); g.innerHTML = '';
+    for(let i=1; i<=200; i++){
+        const b = document.createElement('button');
+        b.className = 'nBtn'; b.textContent = i;
+        
+        // Bloquea si está en la lista global o si este usuario ya lo reservó antes
+        if(LISTA_MAESTRA_RESERVADOS.includes(i) || localTaken.includes(i)){ 
+            b.classList.add('tkn');
+            b.disabled = true;
+        } else if(selSet.has(i)){ 
+            b.classList.add('act'); 
+        }
+        
+        b.onclick = () => toggleNum(i);
+        g.appendChild(b);
+    }
 }
 
 function toggleNum(n){
-  if(st[n]) return;
-  selSet.has(n) ? selSet.delete(n) : selSet.add(n);
-  renderGrid(); renderSelPanel();
+    selSet.has(n) ? selSet.delete(n) : selSet.add(n);
+    renderGrid();
+    const p = document.getElementById('panel');
+    p.classList.toggle('vis', selSet.size > 0);
+    document.getElementById('selnums').innerHTML = [...selSet].map(n => `<span class="sel-pill">#${n}</span>`).join('');
+    document.getElementById('pnote').textContent = `Total a pagar: $${(selSet.size * PRICE).toLocaleString('es-AR')}`;
 }
 
 async function doConfirm(){
-  const name = document.getElementById('nminput').value.trim();
-  if(!name){ alert("Por favor ingresá tu nombre"); return; }
-  load();
-  const nums = [...selSet];
-  nums.forEach(n => { st[n] = { name: name, date: new Date().toISOString() }; });
-  save();
-  alert(`¡Reserva confirmada!\n\nNo olvides transferir ${fmt(nums.length*PRICE)} al alias emmabuffa.mp`);
-  selSet.clear();
-  lar();
+    const name = document.getElementById('nminput').value.trim();
+    if(!name){ alert("Por favor, ingresá tu nombre."); return; }
+    
+    const btn = document.getElementById('cbtn');
+    btn.disabled = true; btn.textContent = "Enviando...";
+
+    const nums = [...selSet].sort((a,b)=>a-b);
+    
+    // ENVÍO DE EMAIL (FormSubmit)
+    const formData = new FormData();
+    formData.append('Interesado', name);
+    formData.append('Números Elegidos', nums.join(', '));
+    formData.append('Monto Total', `$${(nums.length * PRICE).toLocaleString('es-AR')}`);
+    formData.append('_subject', `NUEVA RESERVA RIFA: ${name}`);
+    formData.append('_captcha', 'false');
+
+    try {
+        await fetch(`https://formsubmit.co/ajax/${EMAIL_DESTINO}`, {
+            method: 'POST',
+            body: formData
+        });
+        
+        // Guardar localmente para que este usuario vea sus números bloqueados
+        localTaken = [...localTaken, ...nums];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(localTaken));
+        
+        alert("¡Pedido de reserva enviado! Recordá realizar la transferencia.\nRecibirás un mail de confirmación pronto.");
+        selSet.clear();
+        location.reload();
+    } catch(e) {
+        alert("Hubo un error al enviar. Por favor intentá de nuevo.");
+        btn.disabled = false; btn.textContent = "Confirmar y enviar reserva";
+    }
 }
 
-function lar(){ load(); renderGrid(); renderSelPanel(); document.getElementById('rst').textContent = 'Actualizado ' + new Date().toLocaleTimeString(); }
-function resetRifa(){ if(confirm("¿Borrar todo?")){ localStorage.removeItem(SK); lar(); } }
-function doCancel(){ selSet.clear(); renderGrid(); renderSelPanel(); }
-
-lar();
+renderGrid();
 </script>
 </body>
 </html>
