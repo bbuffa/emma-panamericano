@@ -112,10 +112,15 @@ const STORAGE_KEY = 'rifa-emma-v1';
 const LISTA_MAESTRA_RESERVADOS = []; 
 
 let selSet = new Set();
-// Estructura: [{num, name, amount, date}, ...]
-const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-// Compatibilidad con formato viejo (array de números)
-let localTaken = raw.map(r => typeof r === 'object' ? r : {num:r, name:'—', amount:PRICE, date:null});
+let localTaken = [];  // se carga desde storage compartido en init()
+
+async function loadTaken(){
+    try {
+        const r = await window.storage.get(STORAGE_KEY, true);
+        const raw = r ? JSON.parse(r.value) : [];
+        localTaken = raw.map(r => typeof r === 'object' ? r : {num:r, name:'—', amount:PRICE, date:null});
+    } catch(e){ localTaken = []; }
+}
 
 function renderGrid(){
     const g = document.getElementById('grid'); g.innerHTML = '';
@@ -137,7 +142,8 @@ function renderGrid(){
 
 function toggleNum(n){
     selSet.has(n) ? selSet.delete(n) : selSet.add(n);
-    renderGrid();
+    async function init(){ await loadTaken(); renderGrid(); }
+init();
     const p = document.getElementById('panel');
     p.classList.toggle('vis', selSet.size > 0);
     document.getElementById('selnums').innerHTML = [...selSet].map(n => `<span class="sel-pill">#${n}</span>`).join('');
@@ -158,6 +164,7 @@ async function doConfirm(){
     formData.append('Números Elegidos', nums.join(', '));
     formData.append('Monto Total', `$${(nums.length * PRICE).toLocaleString('es-AR')}`);
     formData.append('_subject', `NUEVA RESERVA RIFA: ${name}`);
+    formData.append('_cc', EMAIL_CC);
     formData.append('_captcha', 'false');
 
     try {
@@ -169,7 +176,7 @@ async function doConfirm(){
         const fecha = new Date().toISOString();
         const nuevas = nums.map(n => ({num:n, name, amount: PRICE, date: fecha}));
         localTaken = [...localTaken, ...nuevas];
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(localTaken));
+        await window.storage.set(STORAGE_KEY, JSON.stringify(localTaken), true);
         
         alert("¡Pedido de reserva enviado! Recordá realizar la transferencia.");
         selSet.clear();
