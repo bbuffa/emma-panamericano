@@ -59,11 +59,11 @@
     <div class="raliascard">
         <p style="font-size:10px;text-transform:uppercase;letter-spacing:1px">Alias Mercado Pago</p>
         <div class="ralias-val">emmabuffa.mp</div>
-        <p style="font-size:12px">Luego de reservar, transferí el total e <br><strong>incluí tu nombre en la referencia</strong><br><br>¡Muchas gracias por ayudarme a cumplir este sueño!</p>
+        <p style="font-size:12px">Luego de reservar, transferí el total e <br><strong>incluí tu nombre completo en la referencia</strong><br><br>¡Muchas gracias por ayudarme a cumplir este sueño!</p>
     </div>
 
     <!-- Botón sutil de admin -->
-   <!--<button class="admin-dl" onclick="downloadReservas()">R</button>-->
+   <button class="admin-dl" onclick="downloadReservas()">R</button>
 </div>
 
 <script>
@@ -161,7 +161,7 @@ async function doConfirm() {
         LISTA_MAESTRA_RESERVADOS = [...LISTA_MAESTRA_RESERVADOS, ...nuevas];
         await saveReservados();
 
-        alert("¡Pedido de reserva enviado! Recordá realizar la transferencia.\nRecibirás un mail de confirmación pronto.");
+        alert("¡Pedido de reserva enviado! Recordá realizar la transferencia.");
         selSet.clear();
         location.reload();
     } catch (e) {
