@@ -170,7 +170,7 @@ async function doConfirm(){
         localTaken = [...localTaken, ...nuevas];
         localStorage.setItem(STORAGE_KEY, JSON.stringify(localTaken));
         
-        alert("¡Pedido de reserva enviado! Recordá realizar la transferencia.\nRecibirás un mail de confirmación pronto.");
+        alert("¡Pedido de reserva enviado! Recordá realizar la transferencia.");
         selSet.clear();
         location.reload();
     } catch(e) {
